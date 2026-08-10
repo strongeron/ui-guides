@@ -52,7 +52,7 @@ const tokens = (s: string) => Math.round(s.length / 4);
  * the identifiers already in its diff instead of reasoning about titles.
  *
  * Symbols are mined from the good and bad example source plus the rule text, then
- * filtered by document frequency: anything in more than 15% of rules is React or UI
+ * filtered by document frequency: anything in more than 16% of rules is React or UI
  * boilerplate (`onClick`, `useState`, `<button>`) and discriminates nothing, and
  * anything unique to one rule is usually incidental. What survives reaches ~60% of the
  * corpus — the mechanical rules. The rest are judgment calls about design and prose,
@@ -70,8 +70,17 @@ const SYMBOL_PATTERNS: RegExp[] = [
   /:focus-visible|:focus-within|focus\(\)|font-size|min-h-|min-w-/g,
 ];
 
-/** Above this share of the corpus a symbol is boilerplate and carries no signal. */
-const MAX_DOC_FREQUENCY = 0.15;
+/**
+ * Above this share of the corpus a symbol is boilerplate and carries no signal.
+ *
+ * 0.16 rather than 0.15 because `<label>` sits right on the old line (62 of 411 rules,
+ * 15.1%) and is nothing like the boilerplate the ceiling exists to drop — it is the
+ * entry point to the whole label/`htmlFor` family. At 0.15 a single new example that
+ * happens to render a label deletes `label` from the 32 rule lines that carry it, with
+ * no build failure to notice. Measured: raising the ceiling to 0.16 admits exactly one
+ * additional symbol corpus-wide (`label`) and drops none.
+ */
+const MAX_DOC_FREQUENCY = 0.16;
 
 /** Enough to match on without turning every index line into a wall of tokens. */
 const MAX_TRIGGERS_PER_RULE = 4;

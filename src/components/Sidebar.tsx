@@ -229,28 +229,33 @@ export function Sidebar({
 
               return (
                 <div key={category.id} className="border-b border-border">
-                  <button
-                    type="button"
-                    onClick={() => toggleCategory(category.id)}
-                    aria-expanded={!isCollapsed}
-                    className="sticky top-0 z-10 w-full flex items-center justify-between gap-2 px-4 py-3 bg-background hover:bg-foreground/[0.04] transition-colors"
-                  >
-                    <span className="flex items-center gap-2 min-w-0">
-                      <HugeiconsIcon
-                        icon={ArrowDown01Icon}
-                        size={12}
-                        className={`text-muted-foreground shrink-0 transition-transform duration-200 ${isCollapsed ? '-rotate-90' : ''}`}
-                        aria-hidden="true"
-                      />
-                      <CategoryIcon className="size-4 shrink-0 text-foreground" aria-hidden="true" />
-                      <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider truncate">
-                        {category.title}
-                      </h3>
-                    </span>
-                    <span className="text-[11px] font-medium tabular-nums rounded px-1.5 py-0.5 bg-muted text-muted-foreground">
-                      {categoryPrinciples.length}
-                    </span>
-                  </button>
+                  {/* The opaque backdrop lives on the sticky wrapper, not the button: a
+                      `hover:bg-*` on the button would REPLACE `bg-background` with a
+                      translucent tint, letting the list scroll visibly through the header. */}
+                  <div className="sticky top-0 z-10 bg-background">
+                    <button
+                      type="button"
+                      onClick={() => toggleCategory(category.id)}
+                      aria-expanded={!isCollapsed}
+                      className="w-full flex items-center justify-between gap-2 px-4 py-3 hover:bg-foreground/[0.04] transition-colors"
+                    >
+                      <span className="flex items-center gap-2 min-w-0">
+                        <HugeiconsIcon
+                          icon={ArrowDown01Icon}
+                          size={12}
+                          className={`text-muted-foreground shrink-0 transition-transform duration-200 ${isCollapsed ? '-rotate-90' : ''}`}
+                          aria-hidden="true"
+                        />
+                        <CategoryIcon className="size-4 shrink-0 text-foreground" aria-hidden="true" />
+                        <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider truncate">
+                          {category.title}
+                        </h3>
+                      </span>
+                      <span className="text-[11px] font-medium tabular-nums rounded px-1.5 py-0.5 bg-muted text-muted-foreground">
+                        {categoryPrinciples.length}
+                      </span>
+                    </button>
+                  </div>
                   {!isCollapsed && (
                     <ul>
                       {categoryPrinciples.map((principle) => (
