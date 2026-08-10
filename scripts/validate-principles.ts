@@ -124,6 +124,8 @@ const THEME_SUBJECT_EXEMPT: Record<string, string> = {
     'The multi-stop brand gradient is the content being demonstrated.',
   'interactions-gradient-text-selection':
     'Gradient text and its ::selection behaviour are the subject.',
+  'design-hue-consistency':
+    'Drives its own OKLCH plate so the shadow/border/text tint can be derived from the background hue the reader picks — a theme token cannot be read back and shifted.',
 };
 
 /**
